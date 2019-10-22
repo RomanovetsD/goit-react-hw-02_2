@@ -1,0 +1,29 @@
+.transactionHistory {
+  width: 700px;
+  border-collapse: collapse;
+  margin: 10px auto;
+}
+
+.tableCells,
+.headingTable {
+  color: rgb(41, 36, 66);
+  text-align: center;
+  width: 290px;
+  height: 48px;
+  padding: 5px;
+  background-color: rgb(235, 238, 242);
+  border: 1px solid white;
+}
+
+.headingTable {
+  border: 1px solid white;
+  font-size: 13px;
+  font-family: 'HelveticaNeueCyr';
+  color: rgb(39, 39, 39);
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: rgb(235, 238, 242);
+  text-transform: uppercase;
+  width: 290px;
+  height: 48px;
+}
