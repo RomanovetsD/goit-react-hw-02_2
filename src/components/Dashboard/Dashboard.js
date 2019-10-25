@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
 import { ToastContainer, toast } from 'react-toastify';
-
+import storage from '../../services/stotage';
 /* import component */
 import Controls from '../Controls/Controls';
 import Balance from '../Balance/Balance';
@@ -23,6 +23,29 @@ export default class Dashboard extends Component {
     transactions: [],
     balance: 0,
   };
+
+  /* Lifecycle Phase: Mount */
+  componentDidMount() {
+    const transactions = storage.get('transactions');
+    const balance = storage.get('balance');
+
+    if (transactions && balance >= 0) {
+      this.setState({ transactions, balance });
+    }
+  }
+
+  /* Lifecycle Phase: Update */
+  componentDidUpdate(prevProps, prevState) {
+    const { transactions, balance } = this.state;
+
+    if (
+      prevState.transactions !== transactions &&
+      prevState.balance !== balance
+    ) {
+      storage.save('transactions', transactions);
+      storage.save('balance', balance);
+    }
+  }
 
   /* Event handlers */
   handleChangeDeposit = e => {
