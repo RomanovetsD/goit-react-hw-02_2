@@ -12,6 +12,9 @@ import TransactionHistory from '../TransactionHistory/TransactionHistory';
 import styles from '../Controls/Controls.module.css';
 import 'react-toastify/dist/ReactToastify.css';
 
+/* import constants */
+import { WITHDROWL, DEPOSIT, msg } from '../../server/constants';
+
 /* Date now */
 const dateFormat = require('dateformat');
 
@@ -48,8 +51,7 @@ export default class Dashboard extends Component {
   }
 
   /* Event handlers */
-  handleChangeDeposit = e => {
-    const amount = Number(e.target.parentElement.firstElementChild.value);
+  handleChangeDeposit = amount => {
     if (amount === '' || amount > 0) {
       this.setState(({ transactions, balance }) => {
         const newAtempt = {
@@ -64,15 +66,13 @@ export default class Dashboard extends Component {
         };
       });
     } else {
-      toast.info('Введите сумму для проведения операции!');
+      toast.info(msg.amountMoney);
     }
   };
 
-  handleChangeWithdrawl = e => {
-    const amount = Number(e.target.parentElement.firstElementChild.value);
-
+  handleChangeWithdrawl = amount => {
     if (amount <= 0) {
-      toast.error('Некорректно введена сумма! Невозможно провести операцию!');
+      toast.error(msg.tryAgain);
     } else if (amount <= this.state.balance) {
       const newAtempt = {
         type: 'withdrawal',
@@ -87,20 +87,20 @@ export default class Dashboard extends Component {
         };
       });
     } else {
-      toast.warn('На счету недостаточно средств для проведения операции!');
+      toast.warn(msg.notEnoughMoney);
     }
   };
 
   render() {
     const { transactions, balance } = this.state;
     const deposit = [...transactions].reduce((acc, item) => {
-      if (item.type === 'deposit') {
+      if (item.type === DEPOSIT) {
         return acc + item.amount;
       }
       return acc;
     }, 0);
     const withdrawal = [...transactions].reduce((acc, item) => {
-      if (item.type === 'withdrawal') {
+      if (item.type === WITHDROWL) {
         return acc + item.amount;
       }
       return acc;
