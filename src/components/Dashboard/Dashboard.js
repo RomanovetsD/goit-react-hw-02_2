@@ -1,19 +1,27 @@
-/* import note-modules */
+/* Core */
 import React, { Component } from 'react';
 import shortid from 'shortid';
 import { ToastContainer, toast } from 'react-toastify';
 import storage from '../../services/stotage';
-/* import component */
+
+/* Components */
 import Controls from '../Controls/Controls';
 import Balance from '../Balance/Balance';
 import TransactionHistory from '../TransactionHistory/TransactionHistory';
 
-/* import CSS */
+/* Instruments */
 import styles from '../Controls/Controls.module.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-/* import constants */
-import { WITHDROWL, DEPOSIT, msg } from '../../server/constants';
+/* Server */
+import {
+  WITHDROWL,
+  DEPOSIT,
+  msg,
+  DATA_FORMAT,
+  TRANSACTIONS,
+  BALANCE,
+} from '../../server/constants';
 
 /* Date now */
 const dateFormat = require('dateformat');
@@ -29,8 +37,8 @@ export default class Dashboard extends Component {
 
   /* Lifecycle Phase: Mount */
   componentDidMount() {
-    const transactions = storage.get('transactions');
-    const balance = storage.get('balance');
+    const transactions = storage.get(TRANSACTIONS);
+    const balance = storage.get(BALANCE);
 
     if (transactions && balance >= 0) {
       this.setState({ transactions, balance });
@@ -55,10 +63,10 @@ export default class Dashboard extends Component {
     if (amount === '' || amount > 0) {
       this.setState(({ transactions, balance }) => {
         const newAtempt = {
-          type: 'deposit',
+          type: DEPOSIT,
           id: shortid.generate(),
           amount,
-          date: dateFormat(now, 'mm/dd/yyyy, HH:MM:ss'),
+          date: dateFormat(now, DATA_FORMAT),
         };
         return {
           transactions: [...transactions, newAtempt],
@@ -75,10 +83,10 @@ export default class Dashboard extends Component {
       toast.error(msg.tryAgain);
     } else if (amount <= this.state.balance) {
       const newAtempt = {
-        type: 'withdrawal',
+        type: WITHDROWL,
         id: shortid.generate(),
         amount,
-        date: dateFormat(now, 'mm/dd/yyyy, HH:MM:ss'),
+        date: dateFormat(now, DATA_FORMAT),
       };
       this.setState(({ transactions, balance }) => {
         return {
