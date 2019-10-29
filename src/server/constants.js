@@ -1,6 +1,6 @@
-export const DEPOSIT = 'Deposit';
+export const DEPOSIT = 'deposit';
 
-export const WITHDROWL = 'Withdrawal';
+export const WITHDROWL = 'withdrawal';
 
 export const msg = {
   amountMoney: 'Введите сумму для проведения операции!',
