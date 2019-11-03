@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import styles from './Controls.module.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { msg } from '../../server/constants';
 
 export default class Controls extends Component {
   static propTypes = {
@@ -9,43 +12,47 @@ export default class Controls extends Component {
   };
 
   state = {
-    value: '',
+    inputValue: '',
   };
 
-  handleValue = ({ target }) => {
-    const { value } = target;
-    this.setState({ value: Number(value) });
+  handleValue = e => {
+    const inputToNumber = Number(e.target.value);
+    if (Number.isNaN(inputToNumber)) {
+      toast.error(msg.amountMoney);
+      return;
+    }
+
+    this.setState({ inputValue: inputToNumber });
   };
 
   handleChangeDeposit = () => {
-    this.props.onDeposit(this.state.value);
+    this.props.onDeposit(this.state.inputValue);
     this.reset();
   };
 
   handleChangeWithdrawl = () => {
-    this.props.onWithdraw(this.state.value);
+    this.props.onWithdraw(this.state.inputValue);
     this.reset();
   };
 
   reset = () => {
-    this.setState({ value: '' });
+    this.setState({ inputValue: '' });
   };
 
   render() {
-    const { value } = this.state;
+    const { inputValue } = this.state;
     return (
       <section className={styles.controls}>
         <input
           className={styles.input}
-          type="number"
-          name="amount"
-          value={value}
+          type="text"
+          value={inputValue}
           onChange={this.handleValue}
         />
         <button
           className={styles.button}
           type="button"
-          onClick={this.handleChangeDeposit}
+          onClick={(this.notify, this.handleChangeDeposit)}
         >
           Deposit
         </button>

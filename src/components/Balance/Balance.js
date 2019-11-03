@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Balance.module.css';
 
-/* Add  arrow*/
 import red from '../../img/red.png';
 import green from '../../img/green.png';
 
